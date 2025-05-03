@@ -1,0 +1,18 @@
+.{
+    .name = .yoga_zig,
+    .version = "3.2.1",
+    .fingerprint = 0xb781dea6cf99dd23, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.14.0",
+    .dependencies = .{
+        // See `zig fetch --save <url>` for a command-line interface for adding dependencies.
+    },
+
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        // For example...
+        //"LICENSE",
+        //"README.md",
+    },
+}
