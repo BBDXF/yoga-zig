@@ -47,10 +47,27 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    const yoga_zig_mod = b.addModule("yoga_zig", .{
+    yoga_zig_step.addIncludePath(b.path("yoga"));
+    const yoga_zig_mod = b.createModule(.{
         .root_source_file = yoga_zig_step.getOutput(),
         .target = target,
         .optimize = optimize,
     });
-    yoga_zig_mod.link_libcpp = true;
+
+    // build test
+    const test_basic_mod = b.createModule(.{
+        .root_source_file = b.path("tests/basic.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    test_basic_mod.addIncludePath(b.path("yoga"));
+    test_basic_mod.addImport("yoga_zig", yoga_zig_mod); // import yoga_zig module to test_basic_mod
+
+    const test_basic = b.addExecutable(.{
+        .name = "test_basic",
+        .root_module = test_basic_mod,
+    });
+    test_basic.linkLibCpp();
+    test_basic.linkLibrary(yoga_lib);
+    b.installArtifact(test_basic);
 }
